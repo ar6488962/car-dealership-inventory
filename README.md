@@ -190,7 +190,11 @@ This real screenshot shows the empty inventory page while the frontend was conne
 
 ![Empty inventory](screenshots/inventory-empty-state.png)
 
-No fake screenshots are included. More signed-in or admin screenshots can be added after capturing them from the running app.
+This real screenshot shows the admin inventory panel with vehicle actions:
+
+![Admin inventory](screenshots/admin-inventory.png)
+
+No fake screenshots are included. Both images were captured from the running local app.
 
 ## My AI Usage
 
@@ -215,7 +219,7 @@ AI helped me move faster, but I still had to check the code and test the real be
 
 Personal reflection to complete before submission:
 
-> [Add a few sentences in your own words about what you learned and what you still want to understand better.]
+While working on this project, I learned how different parts of a full-stack application work together. I got a better understanding of FastAPI, React, database operations, login security, and admin permissions. I also learned that writing code is not enough and we need to test it properly to find errors. AI helped me understand problems and complete tasks faster, but I still had to check the code and test the features myself. I want to learn more about writing better tests, improving security, and building applications without depending too much on AI
 
 ## Raw AI conversations
 

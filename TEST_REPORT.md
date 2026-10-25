@@ -14,7 +14,7 @@ cd backend
 Result:
 
 ```text
-20 passed, 1 warning in 7.01s
+20 passed, 1 warning in 11.78s
 ```
 
 The tests ran with Python 3.14.0. They use a temporary in-memory SQLite database. They do not use the real local database file.
@@ -54,7 +54,20 @@ Result: **Success**.
 
 Vite transformed 1,937 modules and created the production files in `frontend\dist\`. The build folder is ignored by Git.
 
-There is no frontend unit-test command in this project. Frontend behavior was checked with the build, code diagnostics, real API checks, and a browser smoke check. This is not the same as automated frontend tests.
+Frontend behavior was also checked with the automated tests below, real API checks, and a browser smoke check.
+
+## Frontend automated tests
+
+Command:
+
+```powershell
+cd frontend
+npm test
+```
+
+Result: **3 passed**.
+
+The tests check vehicle search, the disabled purchase button when stock is zero, and stock refresh after a successful purchase. The tests use Vitest and React Testing Library.
 
 ## Other checks
 
@@ -66,14 +79,12 @@ There is no frontend unit-test command in this project. Frontend behavior was ch
 - The empty inventory page showed data from the backend.
 - A real API vehicle was created, purchased, restocked, and deleted in the earlier smoke test.
 - The browser showed the new stock after a purchase.
-- The screenshot in `screenshots\inventory-empty-state.png` is a real capture from the running app.
+- The screenshots in `screenshots\inventory-empty-state.png` and `screenshots\admin-inventory.png` are real captures from the running app.
 
 ## Not tested
 
 - Docker Compose was not run.
 - PostgreSQL was not run.
-- No frontend automated test runner is configured.
-- No authenticated or admin screenshot is included.
 - The old work does not have enough commit history to prove a complete Red-Green-Refactor process. The current commits do not pretend otherwise.
 
 ## Final assignment check
@@ -88,11 +99,11 @@ There is no frontend unit-test command in this project. Frontend behavior was ch
 | Search and filters | Done | Make, model, category, minimum price, and maximum price are supported. |
 | Purchase and stock rules | Done | Stock decreases safely. Empty stock is rejected. |
 | Backend tests | Done | 20 tests passed with 1 warning. |
-| Frontend automated tests | Missing | No frontend test runner is configured. |
+| Frontend automated tests | Done | 3 Vitest tests passed. |
 | Docker/PostgreSQL check | Not tested | Docker and PostgreSQL were not run. |
-| Real screenshots | Done | The empty inventory screenshot is a real browser capture. |
-| Admin or signed-in screenshots | Missing | They were not captured for this submission. |
+| Real screenshots | Done | Empty inventory and admin inventory screenshots are real browser captures. |
+| Admin or signed-in screenshots | Done | The admin inventory panel screenshot was captured from a signed-in admin session. |
 | AI usage section | Done | README explains the tools and the work they helped with. |
 | Full raw AI chat evidence | Missing | PROMPTS.md has genuine excerpts only. Add the full export or a checked public link. |
-| Personal reflection | Missing | The owner must add their own honest reflection in README. |
+| Personal reflection | Done | A personal reflection is present in README. |
 | Public GitHub repository | Done | The project is pushed to the `main` branch. |
