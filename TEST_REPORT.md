@@ -5,8 +5,8 @@
 - Command: `..\.venv\Scripts\python.exe -m pytest -q` (run from `backend/`)
 - Location: `backend/`
 - Result: **20 passed, 1 warning**
-- Runtime: 33.06 seconds
-- Environment used for this run: Python 3.11.9, package versions from `backend/requirements.txt`
+- Runtime: 7.01 seconds
+- Environment used for this run: Python 3.14.0, package versions from `backend/requirements.txt`
 - Database for test cases: temporary in-memory SQLite via SQLAlchemy `StaticPool` (the application itself defaults to persistent file-backed SQLite and supports PostgreSQL).
 
 ## Covered cases
@@ -49,4 +49,4 @@
 
 ## TDD history
 
-The current directory is not a Git repository, so no commit history is available to verify a historical Red-Green-Refactor sequence. The additional tests in this review were added before the corresponding fixes were validated, but the assessment's required historical commit evidence still needs to be created by the candidate in a public Git repository. Do not manufacture historical commits.
+There was no pre-existing local Git history available to verify a historical Red-Green-Refactor sequence. The additional tests in this review were added before the corresponding fixes were validated, but this submission does not manufacture historical commits or claim that earlier work followed a verifiable TDD sequence.
