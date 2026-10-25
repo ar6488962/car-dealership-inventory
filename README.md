@@ -1,188 +1,226 @@
-# Motorstock — Car Dealership Inventory System
+# Motorstock - Car Dealership Inventory
 
-A full-stack car dealership inventory kata built for the Incubyte Software Craftsperson Intern assessment. It includes a React single-page application, FastAPI REST API, persistent SQL database, token authentication, role-based permissions, inventory operations, and automated backend tests.
+Motorstock is a small car inventory app. A user can create an account, sign in, search for cars, and buy a car. An admin can add cars, change car details, add stock, and delete cars when they have no purchase history.
 
-> **Assessment honesty note:** This repository was prepared with AI assistance. Review the implementation, run it locally, understand the code, and update this README with your actual test results and development experience before submission. Do not claim a historical Red-Green-Refactor commit history unless you actually create it.
+This project was made for the Incubyte Software Craftsperson Intern assessment.
 
-## Features
+## What the project can do
 
-- Register and log in with password hashing and JWT access tokens.
-- Public vehicle listing and search by make, model, category, minimum price and maximum price.
-- Authenticated vehicle updates and purchases.
-- Admin-only vehicle creation, deletion and restocking. Public registration always creates a regular user; it does not accept a role from the client.
-- Persistent users, vehicles and purchase records. SQLite is the easy local default; PostgreSQL is supported through `DATABASE_URL`.
-- Atomic conditional stock decrement to prevent overselling the last unit.
-- React SPA with responsive layouts, filters, login/register, purchase actions and admin inventory controls.
-- Backend tests for authentication, authorization, search, purchases and restocking.
+- Register and sign in users.
+- Protect passwords with secure hashing.
+- Use JWT tokens for signed-in requests.
+- Show cars from a real database.
+- Search by make, model, category, and price.
+- Buy one car at a time.
+- Stop a purchase when stock is zero.
+- Let admins add, update, restock, and delete cars.
+- Stop regular users from using admin actions.
+- Keep users, cars, and purchases in a database.
 
-## Technology
+## Technologies
 
-- Backend: Python, FastAPI, SQLAlchemy, Pydantic, PyJWT
-- Database: SQLite by default; PostgreSQL supported
-- Frontend: React, Vite, HTML5, CSS3 and Tailwind CSS
-- Tests: pytest and FastAPI TestClient
+- **Python and FastAPI** - build the backend API.
+- **SQLAlchemy** - connect the Python code to the database.
+- **SQLite** - simple local database. PostgreSQL is also supported.
+- **React and Vite** - build the web page.
+- **CSS and Tailwind setup** - style the page.
+- **pytest** - test the backend.
 
-## Requirements
+## Project folders
 
-- Python 3.11+ recommended
-- Node.js 20+ and npm
-- Git
-- Optional: Docker Desktop, if you want PostgreSQL via Docker Compose
+```text
+backend/      FastAPI app, database code, and tests
+frontend/     React app
+screenshots/  Real screenshots from the running app
+README.md     This guide
+TEST_REPORT.md Test results
+PROMPTS.md    Available raw AI prompt material
+```
 
-## Run locally (SQLite — simplest path)
+## What you need
 
-### 1. Backend
+- Windows 10 or 11.
+- Python 3.11 or newer.
+- Node.js 20 or newer.
+- npm.
+- Git.
+- Docker Desktop is optional. It is only needed for the PostgreSQL option.
 
-```bash
+## Run the app on Windows
+
+Open two PowerShell windows. Run the backend in the first window and the frontend in the second window.
+
+### 1. Set up the backend
+
+From the project folder:
+
+```powershell
 cd backend
 python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS/Linux: source .venv/bin/activate
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-cp .env.example .env  # Windows PowerShell: Copy-Item .env.example .env
+Copy-Item .env.example .env
 uvicorn app.main:app --reload
 ```
 
-The API runs at `http://localhost:8000`; interactive API documentation is at `http://localhost:8000/docs`. The SQLite database file is created in `backend/dealership.db`.
+If PowerShell blocks the activate command, you can skip activation and use the Python file directly:
 
-### 2. Frontend (new terminal)
+```powershell
+..\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
-```bash
+The backend runs at `http://localhost:8000`.
+
+The API help page is at `http://localhost:8000/docs`.
+
+The local SQLite file is created at `backend\dealership.db`. It is not committed to Git.
+
+### 2. Set up the frontend
+
+Open a new PowerShell window. From the project folder, run:
+
+```powershell
 cd frontend
 npm install
-cp .env.example .env.local  # Windows PowerShell: Copy-Item .env.example .env.local
+Copy-Item .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:5173`. The frontend calls the API at `http://localhost:8000` by default.
+Open `http://localhost:5173` in a browser.
 
-## Run with PostgreSQL
-
-From the project root, start PostgreSQL: `docker compose up -d db`. Then set `DATABASE_URL` in `backend/.env` to:
+The frontend uses `http://localhost:8000` by default. You can change this in `frontend\.env.local` with:
 
 ```env
-DATABASE_URL=postgresql+psycopg://dealership:dealership_local_password@localhost:5432/dealership
-JWT_SECRET=replace-with-a-long-random-secret
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+VITE_API_URL=http://localhost:8000
 ```
 
-Install backend requirements and run Uvicorn as above. Never use the sample database password or development JWT secret in a public deployment.
+## Database
 
-## Authentication and admin access
+SQLite is the default. The app creates its tables when the backend starts. No separate database setup is needed for local testing.
 
-Registration creates a `user` account. Admin access is not granted by passing a role during registration. The supported local bootstrap command promotes an already-registered account without accepting a password or creating an unexpected user:
+PostgreSQL can also be used. Docker Compose has a local PostgreSQL service:
 
 ```powershell
-cd backend
-..\.venv\Scripts\python.exe -m app.admin --email admin@example.com
+docker compose up -d db
 ```
 
-The command is idempotent and fails if the account does not exist. Do not expose public admin promotion functionality.
+Then set `DATABASE_URL` in `backend\.env` to a PostgreSQL connection string. The exact Docker password is in `docker-compose.yml` and is for local use only. Docker and PostgreSQL were not tested as part of the latest checks, so they are not claimed as verified.
 
-After login, the frontend stores only the bearer token and non-sensitive user profile in localStorage for this assessment demo; it never stores passwords. A `401` response clears the session and asks the user to sign in again. For production systems, consider a secure HttpOnly cookie, refresh-token strategy, rate limiting, audit logging, migrations and stricter deployment hardening.
+## Create an admin account
 
-## API overview
+Normal registration always creates a regular user. A user cannot become an admin by sending a role in the registration request.
 
-| Method | Endpoint | Access | Purpose |
+First register the account in the app or through the API. Then, with the backend stopped or from another terminal, run this from the `backend` folder:
+
+```powershell
+..\.venv\Scripts\python.exe -m app.admin --email your-email@example.com
+```
+
+Use the same email that you registered. The command only changes an existing account. It does not create an account or ask for a password.
+
+Start the backend again. Log out and log in again so the new admin role is loaded into the new token.
+
+## Use the app
+
+1. Open the frontend.
+2. Select **Register** and create a user.
+3. Sign in.
+4. Search by make, model, category, or price.
+5. Select **Buy** when stock is available.
+6. The stock number refreshes after a successful purchase.
+7. When stock is zero, the buy button is disabled.
+8. Sign in as an admin to see the admin controls.
+9. Use the admin panel to add cars, update cars, restock cars, or delete eligible cars.
+
+If a token expires or is not valid, the app clears the local session and asks the user to sign in again. Passwords are never saved in browser storage.
+
+## API list
+
+| Method | URL | Who can use it | What it does |
 |---|---|---|---|
-| POST | `/api/auth/register` | Public | Register a user |
-| POST | `/api/auth/login` | Public | Receive JWT |
-| GET | `/api/vehicles` | Public | List vehicles |
-| GET | `/api/vehicles/search` | Public | Filter inventory |
-| POST | `/api/vehicles` | Admin | Add vehicle |
-| PUT | `/api/vehicles/{id}` | Authenticated | Update vehicle |
-| DELETE | `/api/vehicles/{id}` | Admin | Delete vehicle if no purchase history exists |
-| POST | `/api/vehicles/{id}/purchase` | Authenticated | Purchase one unit |
+| POST | `/api/auth/register` | Anyone | Create a regular user |
+| POST | `/api/auth/login` | Anyone | Sign in and get a token |
+| GET | `/api/vehicles` | Anyone | List cars |
+| GET | `/api/vehicles/search` | Anyone | Filter cars |
+| POST | `/api/vehicles` | Admin | Add a car |
+| PUT | `/api/vehicles/{id}` | Signed-in user | Update a car |
+| DELETE | `/api/vehicles/{id}` | Admin | Delete a car with no purchase history |
+| POST | `/api/vehicles/{id}/purchase` | Signed-in user | Buy one car |
 | POST | `/api/vehicles/{id}/restock` | Admin | Add stock |
-| GET | `/api/health` | Public | Health check |
+| GET | `/api/health` | Anyone | Check that the API is running |
 
-Example search: `/api/vehicles/search?make=Toyota&min_price=5000&max_price=50000`. Vehicle prices in the sample UI are displayed as USD; the assignment does not specify a currency, so adjust the UI/seed data if your evaluator expects another currency.
+Example search:
 
-## Test-driven development workflow
-
-The intended cycle for each feature is **Red → Green → Refactor**:
-
-1. Add one focused failing test before implementing a behavior.
-2. Run it and capture the failure.
-3. Implement the smallest change that passes.
-4. Run the test again.
-5. Refactor, rerun the suite and commit the change with a descriptive message.
-
-Run the backend tests:
-
-```bash
-cd backend
-pytest -v
+```text
+http://localhost:8000/api/vehicles/search?make=Toyota&min_price=5000&max_price=50000
 ```
 
-Optional coverage report (install `pytest-cov` first): `pytest --cov=app --cov-report=term-missing -v`. Record actual output in `TEST_REPORT.md`. The test suite uses a temporary SQLite test database and does not require a running PostgreSQL server.
+The sample UI shows prices in USD. Change the UI text or data if your assessment uses another currency.
 
-On Windows PowerShell with the repository virtual environment:
+## Run tests and build the frontend
+
+Run backend tests from the `backend` folder:
 
 ```powershell
 cd backend
-..\.venv\Scripts\python.exe -m pytest -v
+..\.venv\Scripts\python.exe -m pytest -q
 ```
 
-Build the frontend:
+Build the frontend from the `frontend` folder:
 
 ```powershell
 cd frontend
 npm run build
 ```
 
-## Git and AI co-authorship
+The backend tests use a temporary in-memory database. They do not change the local `dealership.db` file.
 
-Commit small changes with descriptive messages. For each commit where AI contributed, add the co-author trailer required by the assessment and identify the actual tool used. Example format:
+New work should follow this simple test cycle:
 
-```text
-test: add vehicle search cases
+1. Write a test that fails.
+2. Make the smallest code change that passes.
+3. Run the tests again.
+4. Clean up the code if needed.
 
-Used ChatGPT to brainstorm edge cases, then reviewed and adjusted the tests.
+The current repository does not contain enough old commit history to prove that all earlier work followed this cycle. This is stated honestly in `TEST_REPORT.md`.
 
-Co-authored-by: ChatGPT <AI@users.noreply.github.com>
-```
+## Screenshots
 
-Follow the assignment's required two blank lines before the trailer. This project bundle does not pretend to contain a verified, historical TDD commit sequence. Establish and document your own real Red-Green-Refactor commits as you review and work through the code.
+This real screenshot shows the empty inventory page while the frontend was connected to the backend:
+
+![Empty inventory](screenshots/inventory-empty-state.png)
+
+No fake screenshots are included. More signed-in or admin screenshots can be added after capturing them from the running app.
 
 ## My AI Usage
 
 ### Tools used
-- ChatGPT (OpenAI), for requirements breakdown, architecture discussion, drafting initial implementation files, test ideas, UI scaffolding and documentation.
-- Copilot SDK in VS Code, for the verification pass, targeted backend/frontend fixes, regression tests, documentation updates, runtime API/browser checks and submission preparation.
 
-### How I used AI
-- I used ChatGPT to organise the assessment into backend, database, authentication, frontend, testing and documentation tasks.
-- I used it to draft an initial code structure and suggest backend test cases for authentication, permissions, search and inventory.
-- I used it to help create a responsive UI and explain how the frontend communicates with the REST API.
-- I am responsible for reviewing the generated code, running it, fixing problems and making sure I can explain the final implementation.
-- In this verification pass, I reviewed the existing implementation, removed the frontend demo-data path, added session-expiry handling and an admin bootstrap CLI, added regression tests, ran the application, exercised the real API and browser flow, and recorded only observed results.
+- ChatGPT helped with the first project structure, feature ideas, test ideas, UI work, and explanations.
+- Copilot SDK in VS Code helped review the code, fix errors, add tests, improve the frontend, update the documents, run checks, test the real API, and prepare the GitHub submission.
 
-### Reflection
-AI helped accelerate the initial structure and the later verification work, but generated code still required review, tests, runtime checks and corrections. I verified the final behavior against the local API and browser rather than assuming the implementation was correct.
+### How AI helped
 
-> Personal reflection placeholder: [Add your own reflection about what you learned and what you would improve before submission.]
+- It helped split the work into backend, frontend, database, testing, and documentation tasks.
+- It helped find missing cases such as bad tokens, bad roles, empty stock, and invalid updates.
+- It helped remove demo inventory so the page uses the real API.
+- It helped add the admin setup command.
+- It helped update loading, error, empty, login-expiry, and purchase messages.
+- It helped write and update backend tests.
+- I reviewed the changes, ran the tests and build, used the running app, and checked the Git files before pushing.
 
-## PROMPTS.md and raw prompt logs
+### What I learned
 
-See [`PROMPTS.md`](./PROMPTS.md). The assessment asks for raw, unedited AI chat logs or public chat links, not summaries. Keep the original prompts and responses you actually used, and add the remaining raw conversation content or a share link you have checked. Do not label a summary as a raw log.
+AI helped me move faster, but I still had to check the code and test the real behavior. I learned more about FastAPI routes, database stock updates, JWT login, admin permissions, and how the React page talks to the API.
 
-## Screenshots
+Personal reflection to complete before submission:
 
-Save screenshots of the running application in `screenshots/` and embed them here, for example:
+> [Add a few sentences in your own words about what you learned and what you still want to understand better.]
 
-```markdown
-![Vehicle dashboard](screenshots/vehicle-dashboard.png)
-![Admin inventory](screenshots/admin-inventory.png)
-```
+## Raw AI conversations
 
-Captured from the running Vite application with the backend connected and an empty persistent inventory:
-
-![Inventory empty state](screenshots/inventory-empty-state.png)
-
-Capture additional authenticated/admin screenshots before submission if you want to demonstrate those flows; do not use mock or generated screenshots.
+See [`PROMPTS.md`](PROMPTS.md). The assessment asks for raw, unedited chats or a verified public chat link. The current file contains genuine excerpts, but not the full conversation export. Add the full material yourself before submission.
 
 ## Deployment
 
-Deployment is optional. Before deploying, configure a production database, a strong secret, CORS origins, HTTPS and platform environment variables. Never commit `.env` files.
+Deployment is optional. For a real deployment, use a strong secret, a real production database, HTTPS, safe CORS settings, and environment variables. Never commit `.env` files or database files.

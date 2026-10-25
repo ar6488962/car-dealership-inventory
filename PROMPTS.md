@@ -1,12 +1,21 @@
-# Raw AI Prompt Log — Car Dealership Inventory Kata
+# Raw AI Prompts
 
-The assessment requires raw, unedited AI chat logs or public chat links. This file records the actual project-generation request from this conversation; it is not a substitute for the full conversation export. Add the remaining raw prompts and responses verbatim, or a verified share link, before submission. Do not edit the raw text when adding it.
+The assessment asks for raw, unedited AI chats or a verified public chat link.
 
-## User prompt (verbatim excerpt)
+This file contains genuine prompt excerpts that were already available in this project. It does not contain the full chat history. It must not be treated as a complete raw log.
+
+Before submitting the project, add one of these:
+
+- The full relevant chat export, copied without changing the words.
+- A public chat link that you have opened and checked.
+
+Do not add made-up prompts, made-up answers, or a summary and call it a raw log. Remove private information before sharing a full chat.
+
+## Genuine prompt excerpt
 
 > can you complete this projet by your own since you have very good understanding of it and just follow all the steps that is told to follow and give me a full and final working project?
 
-## Assessment requirements supplied by the user (verbatim excerpt)
+## Genuine assessment text excerpt
 
 > TDD Kata: Car Dealership Inventory System
 >
@@ -30,10 +39,6 @@ The assessment requires raw, unedited AI chat logs or public chat links. This fi
 >
 > Deliverables: Public Git repository, README with setup instructions, screenshots, mandatory My AI Usage section, test report, and root PROMPTS.md containing raw unedited AI chat logs or public chat links. Deployment is optional. Plagiarism is forbidden; AI assistance is allowed when transparent.
 
-## Important before submission
+## What you still need to add
 
-This file currently contains the relevant prompt excerpt supplied in this conversation, not the complete chat transcript. The assessment asks for raw logs, so add the full relevant messages and responses without paraphrasing or editing them, or a public chat link you have tested. Remove unrelated private conversation content before sharing.
-
-## Submission note
-
-The complete historical AI conversation export is not available in this working copy. The excerpts above are genuine material already present, but they are not a substitute for the required raw, unedited transcript. Before submission, add the complete relevant transcript or a verified public conversation link. Do not present this note or a summary as a raw log.
+The complete historical conversation is not available in this working copy. Add the full raw conversation or a verified public link before you submit. This is a manual step because I must not invent or rewrite missing chat messages.
