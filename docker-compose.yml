@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dealership
+      POSTGRES_USER: dealership
+      POSTGRES_PASSWORD: dealership_local_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - dealership_data:/var/lib/postgresql/data
+volumes:
+  dealership_data:
