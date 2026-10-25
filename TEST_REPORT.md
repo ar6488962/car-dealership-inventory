@@ -75,3 +75,24 @@ There is no frontend unit-test command in this project. Frontend behavior was ch
 - No frontend automated test runner is configured.
 - No authenticated or admin screenshot is included.
 - The old work does not have enough commit history to prove a complete Red-Green-Refactor process. The current commits do not pretend otherwise.
+
+## Final assignment check
+
+| Requirement | Status | Notes |
+|---|---|---|
+| Backend API | Done | FastAPI routes cover login, users, vehicles, search, purchase, restock, and health check. |
+| Persistent database | Done | SQLite works by default. PostgreSQL support is in the settings but was not tested. |
+| Login and token security | Done | Passwords are hashed. JWT tokens are checked and expire. |
+| Admin permissions | Done | Admin creation, restock, delete, and vehicle creation are protected. |
+| React frontend | Done | The page uses React, Vite, CSS, and the real backend API. |
+| Search and filters | Done | Make, model, category, minimum price, and maximum price are supported. |
+| Purchase and stock rules | Done | Stock decreases safely. Empty stock is rejected. |
+| Backend tests | Done | 20 tests passed with 1 warning. |
+| Frontend automated tests | Missing | No frontend test runner is configured. |
+| Docker/PostgreSQL check | Not tested | Docker and PostgreSQL were not run. |
+| Real screenshots | Done | The empty inventory screenshot is a real browser capture. |
+| Admin or signed-in screenshots | Missing | They were not captured for this submission. |
+| AI usage section | Done | README explains the tools and the work they helped with. |
+| Full raw AI chat evidence | Missing | PROMPTS.md has genuine excerpts only. Add the full export or a checked public link. |
+| Personal reflection | Missing | The owner must add their own honest reflection in README. |
+| Public GitHub repository | Done | The project is pushed to the `main` branch. |
